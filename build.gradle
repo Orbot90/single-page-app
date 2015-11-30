@@ -45,6 +45,4 @@ dependencies {
     compile('org.apache.derby:derby:10.9.1.0')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
-
-    runtime('com.h2database:h2')
 }
