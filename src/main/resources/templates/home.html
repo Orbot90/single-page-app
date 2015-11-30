@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmnls:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Home page</title>
+</head>
+<body ng-app="myApp" ng-controller="LoginController" ng-init="init()">
+<h1>Простое приложение на Spring Boot</h1>
+<div>Это простое тестовое приложение на Spring boot + Angular Js со встроенной базой данных derby</div>
+<div ng-view=""></div>
+
+<div th:include="/tpl/app"></div>
+<div th:include="/tpl/login"></div>
+
+
+<script type="text/javascript" th:src="@{/js/lib/angular.min.js}" />
+<script type="text/javascript" th:src="@{/js/lib/angular-route.min.js}" />
+
+<script type="text/javascript" th:src="@{/js/application.js}" />
+
+<script type="text/javascript" th:src="@{/js/controller/loginCtrl.js}" />
+
+</body>
+</html>
