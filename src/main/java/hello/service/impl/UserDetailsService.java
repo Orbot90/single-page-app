@@ -1,4 +1,4 @@
-package hello.service;
+package hello.service.impl;
 
 import hello.model.User;
 import hello.repository.UserRepository;
@@ -20,9 +20,8 @@ public class UserDetailsService implements org.springframework.security.core.use
     private final AccountStatusUserDetailsChecker detailsChecker = new AccountStatusUserDetailsChecker();
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user = userRepository.findUserByUsername(username);
-
         if(null == user) {
             throw new UsernameNotFoundException("user not found");
         }

@@ -1,5 +1,7 @@
 package hello.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,27 +9,21 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by orbot on 21.11.15.
  */
-@Data
-@NoArgsConstructor
-@RequiredArgsConstructor
 @Entity
 @Table(name = "Users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @NonNull
+    @NotNull
     @Size(min = 4, max=30)
     private String username;
-    @NonNull
+    @NotNull
     @Size(min=4, max=100)
     private String password;
 
@@ -44,6 +40,17 @@ public class User implements UserDetails {
     private boolean accountDisabled;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<UserAuthority> authorities;
+
+    public User() {}
+
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User(String username, Date expires) {
+        this.username = username;
+        this.expires = expires.getTime();
+    }
 
     public Set<UserRole> getRoles() {
         Set<UserRole> userRoles = EnumSet.noneOf(UserRole.class);
@@ -68,27 +75,67 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return !accountExpired;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return !accountLocked;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return !credentialsExpired;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return !accountDisabled;
+    }
+
+    @JsonIgnore
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getExpires() {
+        return expires;
+    }
+
+    public void setExpires(Long expires) {
+        this.expires = expires;
     }
 }

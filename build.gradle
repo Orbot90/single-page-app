@@ -42,7 +42,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-thymeleaf')
     compile('org.hibernate:hibernate-validator')
-    compile('org.apache.derby:derby:10.9.1.0')
+    runtime('org.apache.derby:derby:10.9.1.0')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

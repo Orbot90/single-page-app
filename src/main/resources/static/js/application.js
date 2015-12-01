@@ -11,7 +11,7 @@ var app = angular.module('myApp', ['ngRoute'])
         })
         .otherwise({redirectTo: '/application'})
     }])
-    .run(function($rootScope, $location) {
+    .run(function($rootScope, $location, TokenStorage) {
         $rootScope.$on("$routeChangeStart", function(event, next, current) {
             if(next.templateUrl != '/login.html'
                 && !eval(localStorage.getItem('authenticated'))) {
