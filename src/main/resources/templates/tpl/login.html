@@ -4,15 +4,18 @@
                autocomplete="off"
                required=""
                ng-model="user.username"
-               maxlength="20"
+               maxlength="30"
                ng-disabled="lock"
                 />
+        <br />
         <input type="password"
                required=""
                ng-model="user.password"
                maxlength="100"
                ng-disabled="lock"
                 />
+        <br />
         <input type="submit" value="Войти" ng-disabled="lock"/>
     </form>
+    <a ng-href="#/join">Зарегистрироваться</a>
 </script>

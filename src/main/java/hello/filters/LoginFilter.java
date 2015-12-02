@@ -5,6 +5,7 @@ import hello.model.User;
 import hello.model.UserAuthentication;
 import hello.service.TokenAuthenticationService;
 import hello.service.impl.UserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,15 +26,14 @@ import java.io.IOException;
  */
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private final UserDetailsService userDetailsService;
-    private final TokenAuthenticationService tokenAuthenticationService;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private TokenAuthenticationService tokenAuthenticationService;
 
-    public LoginFilter(String urlMapping, TokenAuthenticationService tokenAuthenticationService,
-                          UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
+    public LoginFilter(String urlMapping, AuthenticationManager authenticationManager) {
         super(new AntPathRequestMatcher(urlMapping));
 
-        this.userDetailsService = userDetailsService;
-        this.tokenAuthenticationService = tokenAuthenticationService;
         setAuthenticationManager(authenticationManager);
     }
 

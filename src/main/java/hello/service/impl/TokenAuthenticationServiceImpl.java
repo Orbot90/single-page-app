@@ -3,6 +3,7 @@ package hello.service.impl;
 import hello.model.User;
 import hello.model.UserAuthentication;
 import hello.service.TokenAuthenticationService;
+import hello.service.TokenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -21,12 +22,8 @@ public class TokenAuthenticationServiceImpl implements TokenAuthenticationServic
     private static final String AUTH_HEADER = "X-AUTH-TOKEN";
     private static final Long ONE_DAY = 1000l * 3600 * 24;
 
-    private final TokenHandler tokenHandler;
-
     @Autowired
-    public TokenAuthenticationServiceImpl(@Value("${token.secret}") String secret) {
-        tokenHandler = new TokenHandler(DatatypeConverter.parseBase64Binary(secret));
-    }
+    private TokenHandler tokenHandler;
 
     @Override
     public void addAuthentication(HttpServletResponse response, UserAuthentication authentication) {
@@ -37,6 +34,13 @@ public class TokenAuthenticationServiceImpl implements TokenAuthenticationServic
 
     @Override
     public Authentication getAuthentication(HttpServletRequest request) {
+        final String token = request.getHeader(AUTH_HEADER);
+        if(token != null) {
+            final User user = tokenHandler.parseUserFromToken(token);
+            if(user != null) {
+                return new UserAuthentication(user);
+            }
+        }
         return null;
     }
 }

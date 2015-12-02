@@ -1,0 +1,30 @@
+<script type="text/ng-template" id="/registration.html">
+    <form ng-submit="register()">
+        <label for="username">Имя пользователя: </label>
+        <input type="text"
+               autocomplete="off"
+               required=""
+               ng-model="reg.username"
+               maxlength="30"
+               ng-disabled="lock"
+               id="username" />
+        <br />
+        <label for="password">Пароль: </label>
+        <input type="password"
+               required=""
+               ng-model="reg.password"
+               maxlength="100"
+               ng-disabled="lock"
+               id="password" />
+        <br />
+        <label for="passwordrep">Повторите пароль: </label>
+        <input type="password"
+               required=""
+               ng-model="reg.passwordrep"
+               maxlength="100"
+               ng-disabled="lock"
+               id="passwordrep" />
+        <input type="submit" ng-disabled="lock" value="Зарегистрироваться" />
+    </form>
+    <span ng-show="passIncorrect">Введённые пароли не совпадают</span>
+</script>

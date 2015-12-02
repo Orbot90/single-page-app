@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hello.model.User;
+import hello.service.TokenHandler;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,7 +21,7 @@ import java.util.Date;
 /**
  * Created by orbot on 01.12.15.
  */
-public class TokenHandler {
+public class TokenHandlerImpl implements TokenHandler {
 
     private static final String HMAC_ALGORITHM = "HmacSHA256";
     private static final String SEPARATOR = ".";
@@ -27,7 +29,7 @@ public class TokenHandler {
 
     private final Mac hmac;
 
-    public TokenHandler(byte[] secretKey) {
+    public TokenHandlerImpl(byte[] secretKey) {
         try {
             hmac = Mac.getInstance(HMAC_ALGORITHM);
             hmac.init(new SecretKeySpec(secretKey, HMAC_ALGORITHM));
@@ -36,6 +38,7 @@ public class TokenHandler {
         }
     }
 
+    @Override
     public User parseUserFromToken(String token) {
         final String[] parts = token.split(SEPARATOR_SPLITTER);
         if(parts.length == 2 && parts[0].length() > 0 && parts[1].length() > 0) {
@@ -52,6 +55,7 @@ public class TokenHandler {
         return null;
     }
 
+    @Override
     public String createTokenForUser(User user) {
         byte[] userBytes = toJSON(user);
         byte[] hash = createHmac(userBytes);

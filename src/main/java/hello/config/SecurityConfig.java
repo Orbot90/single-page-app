@@ -1,5 +1,6 @@
 package hello.config;
 
+import hello.filters.AuthenticationFilter;
 import hello.filters.LoginFilter;
 import hello.service.TokenAuthenticationService;
 import hello.service.impl.UserDetailsService;
@@ -25,6 +26,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsService userDetailsService;
     @Autowired
     TokenAuthenticationService tokenAuthenticationService;
+    @Autowired
+    AuthenticationFilter authenticationFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,14 +39,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .and().addFilterBefore(new LoginFilter("/login", tokenAuthenticationService, userDetailsService, authenticationManager()),
-                    UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(loginFilter(),
+                    UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(new BCryptPasswordEncoder());
+    }
+
+    @Bean
+    public LoginFilter loginFilter() throws Exception {
+        return new LoginFilter("/login", authenticationManager());
     }
 
     @Bean
