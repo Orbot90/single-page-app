@@ -20,6 +20,7 @@ app.controller('LoginController', ['$scope', '$http', 'TokenStorage', '$location
         }).error(function() {
             $scope.lock = false;
             localStorage.removeItem('authenticated');
+            TokenStorage.clear();
         });
 
     }
@@ -33,6 +34,9 @@ app.controller('LoginController', ['$scope', '$http', 'TokenStorage', '$location
                 TokenStorage.clear();
                 localStorage.removeItem('authenticated');
             }
+        }).error(function() {
+            TokenStorage.clear();
+            localStorage.removeItem('authenticated');
         })
     }
 }]);

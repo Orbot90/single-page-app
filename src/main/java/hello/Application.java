@@ -3,6 +3,7 @@ package hello;
 import hello.model.User;
 import hello.model.UserRole;
 import hello.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableAutoConfiguration
 @Configuration
 @ComponentScan
+@Slf4j
 public class Application {
     @Autowired
     UserRepository userRepository;
@@ -36,11 +38,13 @@ public class Application {
             }
 
             public void addUser(String username, String password) {
+                log.info("Adding user {}", username);
                 User user = new User();
                 user.setUsername(username);
                 user.setPassword(new BCryptPasswordEncoder().encode(password));
                 user.grantRole(username.equals("admin") ? UserRole.ADMIN : UserRole.USER);
                 userRepository.save(user);
+                log.info("User {} added successfully");
             }
         };
     }

@@ -1,14 +1,20 @@
 package hello.controller;
 
+import hello.error.InvalidRequestException;
 import hello.model.*;
+import hello.repository.UserRepository;
 import hello.service.TokenHandler;
+import hello.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
 
@@ -20,6 +26,10 @@ public class HelloController {
 
     @Autowired
     TokenHandler tokenHandler;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    UserService userService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(ModelMap model) {
@@ -42,23 +52,14 @@ public class HelloController {
 
     @RequestMapping(value = "/join", method = RequestMethod.POST)
     @ResponseBody
-    public RegistrationResponseDto join(@RequestBody @Valid UserDto user, BindingResult errors) {
+    public RegistrationResponseDto join(@Valid UserDto user, BindingResult errors) {
         RegistrationResponseDto response = new RegistrationResponseDto();
         if(errors.hasErrors()) {
-            response.setSuccess(false);
-            response.setFieldErrors(errors);
-            return response;
+            throw new InvalidRequestException("Invalid register form", errors);
         }
-        User newUser = new User(user.getUsername());
-        newUser.setPassword(user.getPassword());
-        newUser.grantRole(UserRole.USER);
-        String token = tokenHandler.createTokenForUser(newUser);
-        UserAuthentication authentication = new UserAuthentication(newUser);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        String token = userService.registerNewUserAndGetToken(user);
         response.setSuccess(true);
         response.setToken(token);
-
         return response;
     }
 }

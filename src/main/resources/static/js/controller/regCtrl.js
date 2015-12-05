@@ -20,7 +20,7 @@ app.controller('RegistrationController', ['$scope', '$http', 'TokenStorage', '$l
         $http({
             method: 'POST',
             url: '/join',
-            headers: {'Content-Type': 'application/www-form-urlencoded'},
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             data: $.param(model)
         }).success(function(data) {
             if(data.success) {
@@ -28,10 +28,11 @@ app.controller('RegistrationController', ['$scope', '$http', 'TokenStorage', '$l
                 localStorage.setItem('authenticated', true);
                 $scope.lock = false;
                 $location.path('/application');
-            } else {
-                // todo: add error handling
             }
-        })
+        }).error(function(data) {
+            $scope.lock = false;
+           $scope.fieldErrors = data.fieldErrors;
+        });
 
 
     }

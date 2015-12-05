@@ -8,6 +8,8 @@
                maxlength="30"
                ng-disabled="lock"
                id="username" />
+        <span ng-show="fieldErrors.username"
+                style="color: red">Имя пользователя должно быть не меньше 4 символов</span>
         <br />
         <label for="password">Пароль: </label>
         <input type="password"
@@ -16,6 +18,8 @@
                maxlength="100"
                ng-disabled="lock"
                id="password" />
+        <span ng-show="fieldErrors.password"
+                style="color: red">Пароль должен быть не меньше 4 символов</span>
         <br />
         <label for="passwordrep">Повторите пароль: </label>
         <input type="password"
@@ -24,6 +28,7 @@
                maxlength="100"
                ng-disabled="lock"
                id="passwordrep" />
+        <br />
         <input type="submit" ng-disabled="lock" value="Зарегистрироваться" />
     </form>
     <span ng-show="passIncorrect">Введённые пароли не совпадают</span>
