@@ -4,14 +4,11 @@ import hello.model.User;
 import hello.model.UserAuthentication;
 import hello.service.TokenAuthenticationService;
 import hello.service.TokenHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  * Created by orbot on 01.12.15.
@@ -22,7 +19,7 @@ public class TokenAuthenticationServiceImpl implements TokenAuthenticationServic
     private static final String AUTH_HEADER = "X-AUTH-TOKEN";
     private static final Long ONE_DAY = 1000l * 3600 * 24;
 
-    @Autowired
+//    @Autowired
     private TokenHandler tokenHandler;
 
     @Override

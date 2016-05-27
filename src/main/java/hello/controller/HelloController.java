@@ -1,14 +1,16 @@
 package hello.controller;
 
-import hello.error.InvalidRequestException;
-import hello.model.*;
+import hello.model.RegistrationResponseDto;
+import hello.model.User;
+import hello.model.UserAuthentication;
+import hello.model.UserDto;
+import hello.model.error.InvalidRequestException;
 import hello.repository.UserRepository;
 import hello.service.TokenHandler;
 import hello.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -24,7 +26,7 @@ import javax.validation.Valid;
 @Controller
 public class HelloController {
 
-    @Autowired
+//    @Autowired
     TokenHandler tokenHandler;
     @Autowired
     UserRepository userRepository;

@@ -1,11 +1,7 @@
 package hello.config;
 
-import hello.filters.AuthenticationFilter;
-import hello.filters.LoginFilter;
 import hello.service.TokenHandler;
 import hello.service.impl.TokenHandlerImpl;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.xml.bind.DatatypeConverter;
@@ -16,10 +12,10 @@ import javax.xml.bind.DatatypeConverter;
 @Configuration
 public class AppConfig {
 
-    @Value("${token.secret}")
+//    @Value("${token.secret}")
     private String secret;
 
-    @Bean
+//    @Bean
     public TokenHandler tokenHandler() {
         TokenHandlerImpl tokenHandler =
                 new TokenHandlerImpl(DatatypeConverter.parseBase64Binary(secret));

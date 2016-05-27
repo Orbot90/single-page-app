@@ -34,6 +34,22 @@ repositories {
     maven {url 'http://repo.spring.io/snapshot'}
 }
 
+sourceSets {
+    integTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integrationTest/java')
+        }
+        resources.srcDir file('src/integrationTest/resources')
+    }
+}
+
+configurations {
+    integTestCompile.extendsFrom testCompile
+    integTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
     compile('org.projectlombok:lombok:1.16.6')
     compile('org.springframework.boot:spring-boot-autoconfigure')
@@ -44,5 +60,13 @@ dependencies {
     compile('org.hibernate:hibernate-validator')
     runtime('org.apache.derby:derby:10.9.1.0')
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'org.springframework.boot:spring-boot-starter-test',
+            'junit:junit:4.11'
+
+    integTestCompile "org.springframework:spring-test",
+            'org.skyscreamer:jsonassert:1.2.3',
+            "org.springframework:spring-jdbc",
+            'org.hsqldb:hsqldb:2.3.3',
+            'org.dbunit:dbunit:2.4.9',
+            'com.github.springtestdbunit:spring-test-dbunit:1.2.1'
 }

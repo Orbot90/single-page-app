@@ -1,4 +1,4 @@
-package hello.error;
+package hello.model.error;
 
 import org.springframework.validation.Errors;
 

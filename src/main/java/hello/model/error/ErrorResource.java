@@ -1,4 +1,4 @@
-package hello.error;
+package hello.model.error;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
