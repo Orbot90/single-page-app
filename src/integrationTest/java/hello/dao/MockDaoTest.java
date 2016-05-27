@@ -36,6 +36,9 @@ public class MockDaoTest {
         MockEntity mock2 = new MockEntity();
         mock2.setSomeParam("100");
         mocks.add(mock2);
+        MockEntity mock3 = new MockEntity();
+        mock3.setSomeParam("lol");
+        mocks.add(mock3);
         mockRepository.save(mocks);
         Long maxParam = mockRepository.getMaxSomeParam();
         System.out.println(maxParam);

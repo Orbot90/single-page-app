@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface MockRepository extends JpaRepository<MockEntity, Long> {
 
-    @Query(value = "SELECT MAX(CAST(some_Param as numeric)) from Mock_Entity", nativeQuery = true)
+    @Query(value = "SELECT MAX(CAST(some_Param as numeric)) from Mock_Entity " +
+            "where some_Param >= '0' and some_Param < ':'", nativeQuery = true)
     Long getMaxSomeParam();
 }
